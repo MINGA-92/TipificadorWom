@@ -1,0 +1,452 @@
+
+<!DOCTYPE html>
+<html lang="es">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tipificador Wom</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light static-top mb-5 shadow bg-dark">
+        <div class="container">
+        <a class="navbar-brand text-white" href="#"><h2>📳   Datos De Tipificacion</h2></a>
+        <button class="navbar-toggler" style="background-color: #9211D2;" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ms-auto">
+            <li class="nav-item active">
+                <a class="nav-link text-white" href="/">🏠 Inicio</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="/">Usuario Registrados</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="/Create">Registro De Usuario</a>
+            </li>
+            <!-- <li class="nav-item">
+                <a class="nav-link text-white" href="#">༼ つ ◕_◕ ༽      ¡Peguelo!<i class='fas fa-cannabis' style='color:green'></i></a>
+            </li> -->
+            <li class="nav-item">
+                <a class="nav-link text-white" href="#"> Cerrar Sesion</a>
+            </li>
+            </ul>
+        </div>
+        </div>
+    </nav>
+    
+    <section class="pricing py-7">
+        <div class="container">   
+            <div class="card-header text-center text-uppercase" style="background-color: #9211D2;"><b>Datos De Tipificacion</b></div>
+            <div class="card-body bg-light">
+                <form action="/GuardarTipificacion" method="POST" id="FrmTipificacion">
+                    <div class="mb-0" style="margin-top: 2%;">
+                        <label id="LblIdentificacion" for="Identificacion" class="form-label">Numero De Línea: </label>
+                        <input class="form-control" type="text" id="Identificacion" name="Identificacion" maxlength="10" onchange="ActivarHistorico()" onkeypress="return validaNumericos(event)"></br>
+                    </div>
+                    <button type="button" id="BtnConsultar" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#ModalHistorico"" disabled>
+                        Consultar Historial
+                    </button>
+                    <div class="mb-0" style="margin-top: 2%;">
+                        <label id="LblTipificacion" for="TipoDocu" class="form-label">Tipo De Servicio:</label>
+                        <select class="form-select" id="Tipificacion" name="Tipificacion" onchange="ObtenerValor()">
+                            <option disabled selected>Elige Una Opción</option>
+                            <% Resultados.forEach((Tipificacion=> { %>
+                            <option value="<%= Tipificacion.REST_CONSULTA %>"><%= Tipificacion.REST_CONSULTA %></option>
+                            <% })) %>
+                        </select></br>
+                    </div>
+                    <div class="mb-0" style="margin-top: -2%;">
+                        <label id="LblTipificacion_2" for="Tipificacion_2" class="form-label">Tipo De Servicio 2:</label>
+                        <select class="form-select" id="Tipificacion_2" name="Tipificacion_2" onchange="ObtenerValor_2()">
+                            <option disabled selected>Elige Una Opción</option>
+                        </select></br>
+                    </div>
+                    <div class="mb-0" style="margin-top: -2%;">
+                        <label id="LblTipificacion_3" for="Tipificacion_3" class="form-label">Tipo De Servicio 3:</label>
+                        <select class="form-select" id="Tipificacion_3" name="Tipificacion_3" onchange="ObtenerValor_3()">
+                            <option disabled selected>Elige Una Opción</option>
+                            <option value="Tipificacion_3">Tipificacion_3</option>
+                        </select></br>
+                    </div>
+                    <div class="mb-0">
+                        <label id="LblPlantilla" for="Plantilla" class="form-label">Plantilla: </label>
+                        <textarea class="form-control-plaintext" type="text" id="Plantilla" name="Plantilla" style="height: 420px;">Información Brindada:</textarea></br>
+                    </div>
+                    <div class="mb-2">
+                        <button type="button" id="BtnCopiar" class="btn btn-primary" onclick="Copiar_AbrirModal()" style="background-color: #9211D2;">Copiar y Guardar</button>
+                        <button type="button" id="BtnAbrirModal" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" hidden="true">Copiar y Guardar</button>
+                        <a href="/" class="btn btn-secondary">Limpiar</a>
+                    </div>
+
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">¡Copiado! - Trouble Tickets</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                <div class="mb-3">
+                                    <label for="TroubleTicket" class="col-form-label">Ingresa Numero De Trouble Ticket:</label>
+                                    <input type="text" class="form-control" id="TroubleTicket" name="TroubleTicket">
+                                </div>
+                                <div class="mb-3" hidden="true">
+                                    <label for="Cronometro" class="col-form-label">Tiempo Cronometro:</label>
+                                    <input type="text" class="form-control" id="TxtCronometro" name="TxtCronometro">
+                                </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" id="BtnGuardar" class="btn btn-primary" hidden="true">Guardar Todo</button>
+                                <button type="button" id="BtnValidar" class="btn btn-primary" onclick="ValidacionCampos()" style="background-color: #9211D2;">Guardar Todo</button>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Cronometro -->
+    <div class="card-header bg-primary text-center text-uppercase" id="Contenedor">
+        <label id="Tiempo De Gestión">Tiempo De Gestión:  </label>
+        <label id="Horas">00</label>
+		<label id="Minutos">:00</label>
+		<label id="Segundos">:00</label>
+		<label id="Centesimas">:00</label></br>
+		<input type="button" class="boton" id="BtnIniciar" value="Iniciar &#9658;" onclick="Inicio();">
+		<input type="button" class="boton" id="BtnDetener" value="Detener &#8718;" onclick="Detener();" disabled>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="ModalHistorico" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel"> ... 👻🎱🎶💻☠🎮♠♣🤖🤪 ...</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Registro Historico:
+                    <div class="row">
+                        <table id="TblHistoricos" class="table table-bordered table-striped text-center mt-4">
+                            <thead class="bg-info text-black">
+                                <tr>     
+                                    <th>Numero De Linea</th>
+                                    <th>Trouble Ticket</th>
+                                    <th>Tipo De Servicio</th>
+                                    <th>Plantilla Gestionada</th>
+                                    <th>Fecha Registro</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% Resultados.forEach((Usuario=> { %>
+                                <tr>          
+                                    <td><%= Usuario.ID_Usuario %></td>
+                                    <td><%= Usuario.Tipo_Documento %></td>       
+                                    <td><%= Usuario.Doc_Usuario %></td>          
+                                    <td><%= Usuario.Nombre_Usuario %></td>
+                                    <td><%= Usuario.Cargo_Usuario %></td>
+                                </tr>
+                                <% })) %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar ☠</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.4.4/sweetalert2.all.js"></script>
+    <script>
+        //Cronometro
+        var centesimas = 0;
+        var segundos = 0;
+        var minutos = 0;
+        var horas = 0;
+        //Iniciar Cronometro
+        function Inicio(){
+            control = setInterval(Cronometrar,10);
+            document.getElementById("BtnIniciar").disabled = true;
+            document.getElementById("BtnDetener").disabled = false;
+        }
+        //Detener Cronometro
+        function Detener(){
+            clearInterval(control);
+            document.getElementById("BtnDetener").disabled = true;
+        }
+        //Cronometrar
+        function Cronometrar(){
+            if(centesimas < 99){
+                centesimas++;
+                if(centesimas < 10){ centesimas = "0"+centesimas }
+                Centesimas.innerHTML = ":"+centesimas;
+            }
+            if(centesimas == 99){
+                centesimas = -1;
+            }
+            if(centesimas == 0){
+                segundos ++;
+                if(segundos < 10){ segundos = "0"+segundos }
+                Segundos.innerHTML = ":"+segundos;
+            }
+            if(segundos == 59){
+                segundos = -1;
+            }
+            if((centesimas == 0)&&(segundos == 0)){
+                minutos++;
+                if(minutos < 10){ minutos = "0"+minutos }
+                Minutos.innerHTML = ":"+minutos;
+            }
+            if(minutos == 59){
+                minutos = -1;
+            }
+            if((centesimas == 0)&&(segundos == 0)&&(minutos == 0)){
+                horas ++;
+                if(horas < 10){ horas = "0"+horas }
+                Horas.innerHTML = horas;
+            }
+        }
+
+        //Activar Boton Consultar Historico
+        function ActivarHistorico(){
+            document.getElementById("BtnConsultar").disabled= false;
+            //Iniciar Cronometro
+            var BtnIniciar = document.getElementById('BtnIniciar');
+            BtnIniciar.click();
+        }
+
+        //Función para validar solo caracteres núnericos
+        function validaNumericos(event){
+            if(event.charCode >= 48 && event.charCode <= 57){
+                return true;
+            }
+            return false;
+        }
+
+        //Función para min y maximo de digitos núnericos
+        function ValiadarCantidadCaracteresMovil(valor){
+            if(valor.length < 10){
+                Swal.fire({
+                    icon: 'error',
+                    title: '😪   Oops...',
+                    text: '!El Numero Celular No Tiene Los 10 Digitos!'
+                })
+                return Controlador = 0;
+            } else {
+                return Controlador = 1;
+            }
+        }
+
+        //Función para enviardatos por json
+        const getData = async (route) => {
+            try {
+                let res = await fetch(route);
+                let json = await res.json();
+                if(!res.ok) throw { status: res.status, statusText: res.statusText };
+                return json;
+            } catch (err){
+                console.error(err);
+                Toast.fire({
+                icon: 'error',
+                title: `Error en getData(): ${(err.status, err.statusText)}`,
+                });
+            }
+        };
+    
+        //Función para consultar Lista desplegable 2
+        function ObtenerValor(){
+            let Type= document.getElementById('Tipificacion');
+            let ValorType= Type.value;
+            if(ValorType != ""){  
+                getData('/Consultar/'+ValorType).then((Respuesta)=>{
+                    ArrayResultado= Respuesta.map((El)=>El.REST_DETALLE);
+                    Options= "";
+                    ArrayResultado.forEach(element => {
+                        Options+= `<option value="${element}">${element}</option>` 
+                    });
+                    console.log(Options)
+                    document.getElementById("Tipificacion_2").innerHTML=Options;
+                })
+            }
+        }
+
+        //Función para consultar Lista desplegable 2
+        function ObtenerValor_2(){
+            let Type_2= document.getElementById('Tipificacion_2');
+            let ValorType_2= Type_2.value;
+            if(ValorType_2 != ""){  
+                getData('/Consultar2/'+ValorType_2).then((Respuesta)=>{
+                    ArrayResultado= Respuesta.map((El)=>El.REST_DETALLE_2);
+                    Options_2= "";
+                    ArrayResultado.forEach(element => {
+                        Options_2+= `<option value="${element}">${element}</option>`
+                    });
+                    console.log(Options_2)
+                    document.getElementById("Tipificacion_3").innerHTML=Options_2;
+                })
+            }
+        }
+
+        //Función para consultar Plantilla
+        function ObtenerValor_3(){
+            let Type_3= document.getElementById('Tipificacion_3');
+            let ValorType_3= Type_3.value;
+            if(ValorType_3 != ""){  
+                getData('/ConsultarPlantilla/'+ValorType_3).then((Respuesta)=>{
+                    ArrayResultado= Respuesta.map((El)=>El.REST_DETALLE_4);
+                    NewPlantilla= "";
+                    ArrayResultado.forEach(element => {
+                        NewPlantilla+= `${element}`
+                    });
+                    console.log(NewPlantilla)
+                    document.getElementById("Plantilla").innerHTML=NewPlantilla;
+                })
+            }
+        }
+
+        //Funcion para copiar formulario al portapapeles
+        function Copiar_AbrirModal(){
+            var LblIdentificacion= document.getElementById("LblIdentificacion").innerText
+            Telefono= document.getElementById('Identificacion').value;
+            var LblTipificacion= document.getElementById("LblTipificacion").innerText
+            Tipificacion= document.getElementById('Tipificacion').value;
+            var LblTipificacion_2= document.getElementById("LblTipificacion_2").innerText
+            Tipificacion_2= document.getElementById('Tipificacion_2').value;
+            var LblTipificacion_3= document.getElementById("LblTipificacion_3").innerText
+            Tipificacion_3= document.getElementById('Tipificacion_3').value;
+            var LblPlantilla= document.getElementById('LblPlantilla').innerText;
+            Plantilla= document.getElementById('Plantilla').value;
+            var DatosCopiados= LblIdentificacion+" "+Telefono+" / "+LblTipificacion+" "+Tipificacion+" / "+LblTipificacion_2+" "+Tipificacion_2+" / "+LblTipificacion_3+" "+Tipificacion_3+" / "+LblPlantilla+" "+Plantilla
+            var CampoTemporal = document.createElement("input");
+            CampoTemporal.setAttribute("value", DatosCopiados)
+            document.body.appendChild(CampoTemporal);
+            CampoTemporal.select();
+            document.execCommand("copy");
+            document.body.removeChild(CampoTemporal);
+            Swal.fire({
+                title: '¡Formulario Copiado!  😉',
+                html: 'Toda La Informacion Del Formulario Fue Copiada...</br> <b></b>',
+                timer: 1200,
+                timerProgressBar: true,
+                didOpen: () => {
+                    Swal.showLoading()
+                    const b = Swal.getHtmlContainer().querySelector('b')
+                    timerInterval = setInterval(() => {
+                    b.textContent = Swal.getTimerLeft()
+                    }, 100)
+                },
+                willClose: () => {
+                    clearInterval(timerInterval)
+                }
+            }).then((result) => {
+                if(result.dismiss === Swal.DismissReason.timer){
+                    console.log('I was closed by the timer   😤')
+                }
+            })
+
+            var BtnAbrirModal = document.getElementById('BtnAbrirModal');
+            BtnAbrirModal.click();
+        }
+
+       //Función para validar campos vacios
+        function ValidacionCampos(){
+            Identificacion= document.getElementById('Identificacion');
+            Telefono= Identificacion.value;
+            TipificacionI= document.getElementById('Tipificacion');
+            Tipificacion= TipificacionI.value;
+            Tipificacion_2I= document.getElementById('Tipificacion_2');
+            Tipificacion_2= Tipificacion_2I.value;
+            Tipificacion_3I= document.getElementById('Tipificacion_3');
+            Tipificacion_3= Tipificacion_3I.value;
+            PlantillaI= document.getElementById('Plantilla');
+            Plantilla= PlantillaI.value;
+            TroubleTicketI= document.getElementById('TroubleTicket');
+            TroubleTicket= TroubleTicketI.value;
+            TipoDato= isNaN(Telefono);
+
+            if(Telefono == undefined || Telefono == ""){
+                Swal.fire({
+                    icon: 'error',
+                    title: '😕   Oops...',
+                    text: '!Debes Diligenciar El Campo "Numero De Linea"!'
+                })
+            }else if(TipoDato == true){
+                Swal.fire({
+                    icon: 'error',
+                    title: '😠   Oops...',
+                    text: '!El Campo "Numero De Linea" No Es Un Valor Numerico!  😤'
+                })
+            }else if(Tipificacion == undefined || Tipificacion == "Elige Una Opción"){
+                Swal.fire({
+                    icon: 'error',
+                    title: '😕   Oops...',
+                    text: '!Debes Diligenciar El Campo "Tipo De Servicio"!'
+                })
+            }else if(Tipificacion_2 == undefined || Tipificacion_2 == "Elige Una Opción"){
+                Swal.fire({
+                    icon: 'error',
+                    title: '😕   Oops...',
+                    text: '!Debes Diligenciar El Campo "Tipo De Servicio 2"!'
+                })
+            }else if(Tipificacion_3 == undefined || Tipificacion_3 == "Elige Una Opción"){
+                Swal.fire({
+                    icon: 'error',
+                    title: '😕   Oops...',
+                    text: '!Debes Diligenciar El Campo "Tipo De Servicio 3"!'
+                })
+            }else if(Plantilla == undefined || Plantilla == ""){
+                Swal.fire({
+                    icon: 'error',
+                    title: '😕   Oops...',
+                    text: '!Debes Diligenciar El Campo "Plantilla"!'
+                })
+            }else if(TroubleTicket == undefined || TroubleTicket == ""){
+                Swal.fire({
+                    icon: 'error',
+                    title: '😕   Oops...',
+                    text: '!Debes Diligenciar El Campo "Numero De Trouble Ticket"!'
+                })
+            }else{
+                MiControlador= ValiadarCantidadCaracteresMovil(Telefono);
+                if(MiControlador == 1){
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: '¡Registro Guardado Exitosamente!    😏👍',
+                        showConfirmButton: false,
+                        timer: 2000
+                    })
+                    setTimeout(function(){
+                        //Capturar Tiempo Cronometro
+                        var BtnDetener = document.getElementById('BtnDetener');
+                        BtnDetener.click();
+                        var LblHoras= document.getElementById("Horas").innerText
+                        var LblMinutos= document.getElementById("Minutos").innerText
+                        var LblSegundos= document.getElementById("Segundos").innerText
+                        var LblCentesimas= document.getElementById("Centesimas").innerText
+                        var TiempoCompleto= LblHoras+LblMinutos+LblSegundos
+                        var CampoCronometro= document.getElementById("TxtCronometro");
+                        CampoCronometro.setAttribute("value", TiempoCompleto);
+
+                        var GuardarTodo = document.getElementById('BtnGuardar');
+                        GuardarTodo.click();
+                    }, 2500);
+                }
+
+            }
+        }
+    
+    </script>
+</body>
+</html>
